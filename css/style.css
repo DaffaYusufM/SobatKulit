@@ -479,6 +479,7 @@ footer {
     box-shadow: -5px 0 15px rgba(0,0,0,0.1);
   }
   
+  
   .nav-items.active {
     display: flex;
   }
@@ -506,6 +507,10 @@ footer {
     transform: rotate(-45deg) translate(7px, -6px);
   }
   
+  .benefit-text a{
+    text-decoration: none;
+    list-style-type: none;
+  }
   .container-section,
   .section-2 .section-inner,
   .section-3 .section-benefit,
