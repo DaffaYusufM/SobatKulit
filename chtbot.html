@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SobatKulit - Platform konsultasi kulit berbasis AI untuk membantu mengenali kebutuhan kulitmu">
+  <link rel="icon" type="image/png" href="asset/image/logo/Logo-SobatKulit.png"/>
+  <title>SobatKulit - ChatBot Konsultasi Kulit</title>
+  <link rel="stylesheet" href="css/chtbot.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar untuk riwayat chat -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2>Riwayat Chat</h2>
+            <button class="close-sidebar">×</button>
+        </div>
+        <button class="new-chat-btn">
+            <span>+</span> Chat Baru
+        </button>
+        <div class="chat-history">
+            <!-- Riwayat chat akan ditambahkan secara dinamis -->
+        </div>
+    </div>
+
+    <!-- Konten utama -->
+    <div class="main-content">
+        <div class="navbar">
+          <button class="toggle-sidebar">☰</button>
+          <a href="index.html">
+            <h1>SobatKulit ChatBot</h1>
+          </a>
+        </div>
+        
+        <div class="chat-container">
+            <div class="welcome-section">
+                <h2>Selamat Datang👋 Ada Yang Bisa SobatKulit Bantu?</h2>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <!-- Pesan akan ditambahkan secara dinamis -->
+            </div>
+            
+            <div class="input-container">
+                <input type="text" class="chat-input" id="user-input" placeholder="Tanyakan tentang kesehatan kulit Anda...">
+                <button class="voice-btn" id="voice-btn" title="Speech to Text">
+                    🎤
+                </button>
+                <button class="send-btn" id="send-btn" title="Kirim Pesan">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal">
+            <h3>Hapus Percakapan</h3>
+            <p>Apakah Anda yakin ingin menghapus percakapan ini? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancel-delete">Batal</button>
+                <button class="modal-btn delete" id="confirm-delete">Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/chtbot.js"></script>
+</body>
+</html>
