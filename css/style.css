@@ -284,6 +284,10 @@ header {
   flex: 1 1 0;
 }
 
+.benefit-text a {
+  text-decoration: none;
+}
+
 .about-text p,
 .benefit-text p {
   line-height: 1.3;
