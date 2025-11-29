@@ -1,8 +1,6 @@
 // ----------------------
 // Config
 // ----------------------
-const API_KEY = "AIzaSyB46bUg0kSVZaofM0MHZzJaKnb7gEUWhbk";
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
 
 // ----------------------
 // State & Elements
@@ -187,29 +185,22 @@ async function sendToGemini(message) {
         return getRefusalResponse();
     }
 
-    // 2. Kirim ke AI
+    // 2. Kirim ke Backend API Route
     try {
-        // --- LIVE API CALL (Aktifkan jika punya API Key) ---
-        if (API_KEY && API_KEY !== "YourKey") {
-            const response = await fetch(`${GEMINI_URL}?key=${API_KEY}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(makeRequestBody(message))
-            });
+        const response = await fetch('/api/gemini', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message })
+        });
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "Maaf, aku lagi mengalami gangguan teknis. Coba lagi ya!";
-            return aiResponse;
-        } else {
-            // --- SIMULASI RESPON (MOCKUP) ---
-            await new Promise(r => setTimeout(r, 1000));
-            return simulateAIResponse(message);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+        const data = await response.json();
+        return data.response;
     } catch (error) {
         console.error("Error:", error);
         return "Waduh, koneksinya sedang ada masalah nih. Coba tanya lagi ya! 😊";
