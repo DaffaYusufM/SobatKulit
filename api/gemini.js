@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         }
 
         // --- URL BENAR ---
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
         // --- FETCH REQUEST BENAR ---
         const response = await fetch(url, {
