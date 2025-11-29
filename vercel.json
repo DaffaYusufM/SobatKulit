@@ -10,15 +10,15 @@
             "use": "@vercel/static"
         },
         {
-            "src": "css/*",
+            "src": "css/**",
             "use": "@vercel/static"
         },
         {
-            "src": "js/*",
+            "src": "js/**",
             "use": "@vercel/static"
         },
         {
-            "src": "asset/*",
+            "src": "asset/**",
             "use": "@vercel/static"
         }
     ],
@@ -28,8 +28,28 @@
             "dest": "/api/$1"
         },
         {
+            "src": "/(.*\\.css)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*\\.js)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*\\.png)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*\\.jpg)",
+            "dest": "/$1"
+        },
+        {
+            "src": "/(.*\\.svg)",
+            "dest": "/$1"
+        },
+        {
             "src": "/(.*)",
-            "dest": "/index.html"
+            "dest": "/$1"
         }
     ]
 }
