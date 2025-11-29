@@ -180,19 +180,15 @@ function makeRequestBody(message) {
 // 3. Main Send Function
 // ----------------------
 async function sendToGemini(message) {
-
-    // 1. Cek input berbahaya (Safety Net)
     if (!isAllowedInput(message)) {
         return getRefusalResponse();
     }
 
     try {
-
-        // --- LIVE CALL ke API BACKEND VERCEL ---
         const response = await fetch("/api/gemini", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message })
+            body: JSON.stringify(makeRequestBody(message)) // ← FIX UTAMA
         });
 
         if (!response.ok) {
