@@ -159,7 +159,7 @@ function makeRequestBody(message) {
     return {
         contents: [
             {
-                role: "user", // Gemini menggunakan "user" untuk system prompt
+                role: "user",
                 parts: [{ text: SOBATKULIT_SYSTEM_PROMPT }]
             },
             {
