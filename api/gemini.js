@@ -1,5 +1,7 @@
-// api/gemini.js
-export default async function handler(req, res) {
+// api/gemini.js - GUNAKAN INI
+const fetch = require('node-fetch');
+
+module.exports = async function handler(req, res) {
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -32,13 +34,8 @@ export default async function handler(req, res) {
 
         const apiUrl = `${process.env.GEMINI_API_URL}?key=${process.env.GEMINI_API_KEY}`;
 
-        const requestBody = {
-            contents: [
-                {
-                    role: "user",
-                    parts: [{
-                        text: `
-KAMU ADALAH: "SobatKulit AI" — asisten edukasi kesehatan kulit berbahasa Indonesia.
+        // System prompt yang lebih ringkas untuk testing
+        const systemPrompt = `KAMU ADALAH: "SobatKulit AI" — asisten edukasi kesehatan kulit berbahasa Indonesia.
 
 TUJUAN UTAMA:
 - Berikan edukasi yang akurat, aman, dan ramah seputar kesehatan kulit, perawatan wajah, skincare, ingredients, dan kebiasaan yang mempengaruhi kulit.
@@ -120,7 +117,13 @@ PENGINGAT TEKNIS UNTUK IMPLEMENTOR:
 
 CATATAN TERAKHIR:
 - Prompt ini membuat model lebih fleksibel (membaca konteks), lebih ramah dan konsisten pada format, serta lebih cerdas pada pertanyaan campuran. Ingat: prompt efektif hanya bila kamu juga **mengirim konteks percakapan** di request body. 
-` }]
+`;
+
+        const requestBody = {
+            contents: [
+                {
+                    role: "user",
+                    parts: [{ text: systemPrompt }]
                 },
                 {
                     role: "user",
@@ -157,7 +160,6 @@ CATATAN TERAKHIR:
         console.log('Gemini API response data:', data);
 
         const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text
-            || data.candidates?.[0]?.content?.parts?.[0]?.text
             || "Maaf, sedang ada gangguan teknis. Coba lagi ya!";
 
         res.status(200).json({ response: aiResponse });
@@ -169,4 +171,4 @@ CATATAN TERAKHIR:
             details: error.message
         });
     }
-}
+};
