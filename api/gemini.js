@@ -1,52 +1,23 @@
-// api/gemini.js - Version SEDERHANA dulu
-module.exports = async (req, res) => {
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    // Handle preflight
-    if (req.method === 'OPTIONS') {
-        return res.status(200).end();
-    }
-
-    // Only allow POST
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed' });
-    }
-
+export default async function handler(req, res) {
     try {
-        console.log('API Route accessed');
+        const { message } = req.body;
 
-        // Parse JSON body
-        let body = {};
-        try {
-            body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-        } catch (parseError) {
-            return res.status(400).json({ error: 'Invalid JSON' });
-        }
+        const apiKey = process.env.GEMINI_API_KEY;
+        const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent" + apiKey;
 
-        const { message } = body;
-
-        // Basic validation
-        if (!message || typeof message !== 'string') {
-            return res.status(400).json({ error: 'Message is required' });
-        }
-
-        console.log('Received message:', message);
-
-        // SIMPLE RESPONSE DULU - tanpa fetch ke Gemini
-        res.status(200).json({
-            success: true,
-            response: `✅ API BERHASIL! Pesan diterima: "${message}"`,
-            timestamp: new Date().toISOString()
+        const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: message }] }]
+            }),
         });
 
-    } catch (error) {
-        console.error('Server Error:', error);
-        res.status(500).json({
-            error: 'Internal Server Error',
-            details: error.message
-        });
+        const data = await response.json();
+        res.status(200).json(data);
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server error" });
     }
-};
+}

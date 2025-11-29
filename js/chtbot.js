@@ -153,31 +153,64 @@ function getRefusalResponse() {
 }
 
 // ----------------------
-// 3. Main Send Function - GANTI DENGAN YANG INI
+// 2. AI Request Body dengan System Prompt
+// ----------------------
+function makeRequestBody(message) {
+    return {
+        contents: [
+            {
+                role: "user", // Gemini menggunakan "user" untuk system prompt
+                parts: [{ text: SOBATKULIT_SYSTEM_PROMPT }]
+            },
+            {
+                role: "user",
+                parts: [{ text: `Pertanyaan user: ${message}` }]
+            }
+        ],
+        generationConfig: {
+            temperature: 0.7,
+            topK: 40,
+            topP: 0.8,
+            maxOutputTokens: 1024,
+        }
+    };
+}
+
+// ----------------------
+// 3. Main Send Function
 // ----------------------
 async function sendToGemini(message) {
-    console.log("1. Mengirim pesan:", message);
 
+    // 1. Cek input berbahaya (Safety Net)
     if (!isAllowedInput(message)) {
-        console.log("2. Input diblokir oleh safety check");
         return getRefusalResponse();
     }
 
-    // FALLBACK: Jika API tidak bekerja, gunakan mock response
-    const useFallback = true; // Set ke false setelah API berhasil
-    if (useFallback) {
-        console.log("2a. Using fallback mock response");
-        return simulateAIResponse(message);
-    }
-
     try {
-        // ... kode existing Anda
+
+        // --- LIVE CALL ke API BACKEND VERCEL ---
+        const response = await fetch("/api/gemini", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        return aiText || "Maaf, saya tidak mengerti 😅";
+
     } catch (error) {
-        console.error("6. Error detail:", error);
-        // Fallback ke mock response jika error
-        return simulateAIResponse(message);
+        console.error("Error:", error);
+        return "Waduh, sistemnya lagi gangguan nih. Coba lagi ya! 😊";
     }
 }
+
+
 // Mockup cerdas untuk testing tanpa API
 function simulateAIResponse(msg) {
     const txt = normalizeText(msg);
