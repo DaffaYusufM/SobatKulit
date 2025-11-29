@@ -153,40 +153,20 @@ function getRefusalResponse() {
 }
 
 // ----------------------
-// 2. AI Request Body dengan System Prompt
-// ----------------------
-function makeRequestBody(message) {
-    return {
-        contents: [
-            {
-                role: "user", // Gemini menggunakan "user" untuk system prompt
-                parts: [{ text: SOBATKULIT_SYSTEM_PROMPT }]
-            },
-            {
-                role: "user",
-                parts: [{ text: `Pertanyaan user: ${message}` }]
-            }
-        ],
-        generationConfig: {
-            temperature: 0.7,
-            topK: 40,
-            topP: 0.8,
-            maxOutputTokens: 1024,
-        }
-    };
-}
-
-// ----------------------
-// 3. Main Send Function
+// 3. Main Send Function - GANTI DENGAN YANG INI
 // ----------------------
 async function sendToGemini(message) {
+    console.log("1. Mengirim pesan:", message);
+
     // 1. Cek Blokir Fatal (Client Side Safety Net)
     if (!isAllowedInput(message)) {
+        console.log("2. Input diblokir oleh safety check");
         return getRefusalResponse();
     }
 
     // 2. Kirim ke Backend API Route
     try {
+        console.log("3. Mengirim request ke API...");
         const response = await fetch('/api/gemini', {
             method: 'POST',
             headers: {
@@ -195,14 +175,21 @@ async function sendToGemini(message) {
             body: JSON.stringify({ message })
         });
 
+        console.log("4. Response status:", response.status);
+        console.log("4a. Response ok:", response.ok);
+
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const errorText = await response.text();
+            console.log("4b. Error response body:", errorText);
+            throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
         }
 
         const data = await response.json();
+        console.log("5. Data response:", data);
         return data.response;
+
     } catch (error) {
-        console.error("Error:", error);
+        console.error("6. Error detail:", error);
         return "Waduh, koneksinya sedang ada masalah nih. Coba tanya lagi ya! 😊";
     }
 }
