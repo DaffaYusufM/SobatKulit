@@ -158,16 +158,19 @@ function getRefusalResponse() {
 async function sendToGemini(message) {
     console.log("1. Mengirim pesan:", message);
 
-    // 1. Cek Blokir Fatal (Client Side Safety Net)
     if (!isAllowedInput(message)) {
         console.log("2. Input diblokir oleh safety check");
         return getRefusalResponse();
     }
 
-    // 2. Kirim ke Backend API Route
     try {
         console.log("3. Mengirim request ke API...");
-        const response = await fetch('/api/gemini', {
+
+        // Gunakan absolute URL untuk menghindari path issues
+        const apiUrl = window.location.origin + '/api/gemini';
+        console.log("3a. API URL:", apiUrl);
+
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -186,6 +189,12 @@ async function sendToGemini(message) {
 
         const data = await response.json();
         console.log("5. Data response:", data);
+
+        if (data.error) {
+            console.log("5a. API returned error:", data.error);
+            return "Maaf, sedang ada gangguan teknis. Silakan coba lagi nanti. 😊";
+        }
+
         return data.response;
 
     } catch (error) {
@@ -193,7 +202,6 @@ async function sendToGemini(message) {
         return "Waduh, koneksinya sedang ada masalah nih. Coba tanya lagi ya! 😊";
     }
 }
-
 // Mockup cerdas untuk testing tanpa API
 function simulateAIResponse(msg) {
     const txt = normalizeText(msg);
