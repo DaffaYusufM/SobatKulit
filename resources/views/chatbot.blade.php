@@ -54,8 +54,8 @@
       <div id="empty-history" class="text-center text-xs text-gray-400 mt-10 hidden sidebar-text">Belum ada riwayat</div>
     </div>
 
-    <div class="p-4 border-t border-gray-100 hidden md:flex items-center justify-between">
-      <button id="toggle-sidebar-desktop" class="p-2 rounded-lg hover:bg-gray-100 text-gray-500 w-full flex justify-center" title="Collapse Sidebar">
+    <div class="p-4 border-t border-gray-300 hidden md:flex items-center justify-between">
+      <button id="toggle-sidebar-desktop" class="p-2 rounded-lg hover:bg-gray-100 bg-bg-himud text-gray-600 w-full flex justify-center" title="Collapse Sidebar">
         <svg id="collapse-icon" class="w-5 h-5 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
       </button>
     </div>
@@ -73,13 +73,14 @@
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
         </button>
 
-        <div class="flex flex-col">
+        <div class="flex flex-row justify-center items-center">
+            <img src="{{ asset('assets/images/logo/Logo-SobatKulit.png') }}" alt="sobatkulit logo" class="w-10 h-10">
             <a href="{{ url('/') }}">
                 <h2 class="text-lg font-bold text-gray-800 leading-tight">SobatKulit</h2>
             </a>
-          <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
+          {{-- <span class="text-[10px] text-green-600 font-medium flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online
-          </span>
+          </span> --}}
         </div>
       </div>
 
